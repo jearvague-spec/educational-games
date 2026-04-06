@@ -3,39 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Portfolio - Jesús Vásquez</title>
+    <title>EdTech Portfolio - Jesús Vásquez</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; max-width: 800px; margin: auto; padding: 40px; background-color: #f0f2f5; color: #1c1e21; }
-        h1 { color: #0056b3; border-bottom: 3px solid #0056b3; padding-bottom: 10px; text-align: center; }
-        p { text-align: center; font-size: 1.1em; color: #4b4f56; }
-        .menu-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px; }
-        .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center; transition: transform 0.2s; border: 1px solid #ddd; }
-        .card:hover { transform: translateY(-5px); border-color: #0056b3; }
-        .card a { text-decoration: none; color: #0056b3; font-weight: bold; font-size: 1.2em; display: block; }
-        .footer { margin-top: 50px; text-align: center; font-size: 0.9em; color: #8a8d91; }
+        :root { --primary: #0056b3; --bg: #f0f2f5; --text: #1c1e21; --accent: #00bcd4; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; max-width: 900px; margin: auto; padding: 40px; background-color: var(--bg); color: var(--text); }
+        h1 { color: var(--primary); border-bottom: 3px solid var(--primary); padding-bottom: 10px; text-align: center; margin-bottom: 5px; }
+        .subtitle { text-align: center; font-size: 1.1em; color: #4b4f56; margin-bottom: 30px; }
+        
+        .section-title { grid-column: span 2; color: var(--primary); font-weight: bold; font-size: 1.3em; margin-top: 20px; border-left: 5px solid var(--accent); padding-left: 10px; text-align: left; }
+        
+        .menu-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center; transition: all 0.2s ease; border: 1px solid #ddd; display: flex; flex-direction: column; justify-content: center; }
+        .card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 6px 15px rgba(0,86,179,0.2); }
+        .card a { text-decoration: none; color: var(--primary); font-weight: bold; font-size: 1.15em; display: block; margin-bottom: 5px; }
+        .card p { font-size: 0.85em; color: #666; margin: 0; }
+        
+        .highlight { grid-column: span 2; background: linear-gradient(135deg, #ffffff, #eef7ff); border: 2px solid var(--accent); }
+        
+        .footer { margin-top: 50px; text-align: center; font-size: 0.95em; color: #555; border-top: 1px solid #ccc; padding-top: 20px; }
+        @media (max-width: 600px) { .menu-container { grid-template-columns: 1fr; } .section-title, .highlight { grid-column: span 1; } }
     </style>
 </head>
 <body>
 
     <h1>Educational Dev & Accessibility</h1>
-    <p>Select an application to interact with the prototype:</p>
+    <p class="subtitle">Interactive prototypes designed for cognitive support and mathematical learning.</p>
 
     <div class="menu-container">
-        <!-- Make sure the href names match your files in GitHub -->
-        <div class="card"><a href="Do the operation V01-2.html">Math Operations</a></div>
-        <div class="card"><a href="Z Counting with Dice V00 1 Classmate.html">Counting with Dice</a></div>
-        <div class="card"><a href="Memory number.html">Grid: Memory Number</a></div>
-        <div class="card"><a href="Memory words.html">Grid: Memory Word</a></div>
-        <div class="card"><a href="Find Prime-Compose Numbers V02-01.html">Find Prime-Compose Numbers</a></div>
-        <div class="card"><a href="UnderWater odd-even numbers.html">UnderWater odd-even numbers</a></div>
-        <div class="card"><a href="Shapes 2 dimension.html">Shapes 2 dimension</a></div>
-        <div class="card"><a href="Shapes 3D for.html">Shapes 3 dimension</a></div>
-        <div class="card"><a href="Math bee 01.html">Math bee 01</a></div>
+        <!-- Math Foundations -->
+        <div class="section-title">Math & Logic Foundations</div>
+        <div class="card">
+            <a href="Do the operation V01-2.html">Math Operations</a>
+            <p>Arithmetic logic (+ - × /) with 1 and 2 digits.</p>
+        </div>
+        <div class="card">
+            <a href="Z Counting with Dice V00 1 Classmate.html">Counting with Dice</a>
+            <p>Subitizing and basic number recognition.</p>
+        </div>
+        <div class="card">
+            <a href="UnderWater odd-even numbers.html">Odd vs Even Numbers</a>
+            <p>Visual classification in an underwater theme.</p>
+        </div>
+        <div class="card">
+            <a href="Find Prime-Compose Numbers V02-01.html">Prime & Composite</a>
+            <p>Advanced divisibility and factor identification.</p>
+        </div>
+
+        <!-- Cognitive & Memory -->
+        <div class="section-title">Cognitive & Memory Skills</div>
+        <div class="card">
+            <a href="Memory number.html">Grid: Memory Number</a>
+            <p>Numerical retention and spatial matching.</p>
+        </div>
+        <div class="card">
+            <a href="Memory words.html">Grid: Memory Word</a>
+            <p>Vocabulary reinforcement and visual memory.</p>
+        </div>
+
+        <!-- Geometry & Advanced -->
+        <div class="section-title">Geometry & Interactive Media</div>
+        <div class="card">
+            <a href="Shapes 2 dimension.html">2D Shapes</a>
+            <p>Flat figures, vertices, and identification.</p>
+        </div>
+        <div class="card">
+            <a href="Shapes 3D for.html">3D Shapes</a>
+            <p>Spatial reasoning with solid figures.</p>
+        </div>
+
+        <!-- Star Project -->
+        <div class="card highlight">
+            <a href="Math bee 01.html">Math Bee 01: 3D & Voice Synthesis</a>
+            <p>Advanced multi-sensory learning using <strong>Three.js (WebGL)</strong> and <strong>Web Speech API</strong>.</p>
+        </div>
     </div>
 
     <div class="footer">
-        Developed by Jesús Armando Vásquez Guevara <br>
-        Focus on Didactic Learning and Neurodiversity Support (ASD)
+        <strong>Developed by Jesús Armando Vásquez Guevara</strong><br>
+        Specialized in Didactic Learning and Neurodiversity Support (ASD)
     </div>
 
 </body>
