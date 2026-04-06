@@ -7,29 +7,28 @@
     <title>Memory Game - Animals</title>
     <style>
         :root {
-            /* Colores azul claro profesionales */
-            --bg-light-blue: #e0f2fe;
-            --bg-gradient: radial-gradient(circle, #bae6fd 0%, #7dd3fc 100%);
-            --primary-blue: #0369a1;
-            --glass-bg: rgba(255, 255, 255, 0.4);
+            /* Azul profesional oscuro */
+            --bg-color: #075985; 
+            --bg-gradient: radial-gradient(circle, #0c4a6e 0%, #075985 100%);
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --text-light: #f0f9ff;
+            --match-yellow: #fde047; /* Amarillo para aciertos */
         }
 
         body {
             background: var(--bg-gradient);
-            background-color: var(--bg-light-blue);
-            color: var(--primary-blue);
+            background-color: var(--bg-color);
+            color: var(--text-light);
             font-family: 'Segoe UI', Tahoma, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
             margin: 0;
+            padding-top: 50px;
         }
 
         main {
-            width: 90%;
-            max-width: 800px;
-            margin-top: 50px;
             display: flex;
             justify-content: center;
             align-items: flex-start;
@@ -37,73 +36,78 @@
             background: var(--glass-bg);
             padding: 25px;
             border-radius: 15px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 90%;
+            max-width: 800px;
         }
 
-        .section1 {
-            padding: 10px;
-        }
+        h1 { text-align: center; margin-bottom: 20px; color: var(--text-light); }
 
-        h1 { text-align: center; color: var(--primary-blue); }
+        table { border-spacing: 10px; }
 
         button {
-            height: 100px;
-            width: 100px;
-            font-size: 18px; /* Ajustado para legibilidad */
+            height: 90px;
+            width: 90px;
+            font-size: 18px;
             color: #1e293b;
             font-weight: bold;
-            border-radius: 10px;
+            background: #f8fafc;
             border: 2px solid #cbd5e1;
+            border-radius: 10px;
             cursor: pointer;
-            background-color: #f8fafc;
-            transition: all 0.3s ease;
+            transition: all 0.2s;
+            text-transform: capitalize;
         }
 
         button:hover { 
-            background-color: white; 
-            transform: scale(1.05);
-            border-color: var(--primary-blue);
+            transform: scale(1.05); 
+            background: #fff; 
+        }
+        
+        /* Clase para el par correcto (Amarillo) */
+        button.correct {
+            background-color: var(--match-yellow) !important;
+            color: #854d0e !important;
+            border-color: #eab308 !important;
+            cursor: default;
+            transform: scale(1.02);
         }
 
-        button:disabled {
-            background-color: #cbd5e1;
+        button:disabled:not(.correct) { 
+            background: #cbd5e1; 
             color: #64748b;
-            cursor: default;
+            cursor: default; 
+            transform: none; 
             border-color: transparent;
-            transform: none;
         }
 
         .section2 {
-            background-color: rgba(255, 255, 255, 0.6);
+            background-color: rgba(255, 255, 255, 0.1);
             border-radius: 12px;
-            width: 200px;
+            width: 180px;
             padding: 20px;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .estadisticas {
-            border: 2px solid var(--primary-blue);
+            border: 2px solid var(--match-yellow);
             border-radius: 8px;
             padding: 10px;
-            font-size: 1.4rem;
-            color: var(--primary-blue);
+            font-size: 1.3rem;
+            color: var(--match-yellow);
             margin: 0;
         }
 
         footer { 
             margin-top: 40px; 
             text-align: center; 
-            color: var(--primary-blue);
+            color: var(--text-light);
+            font-size: 0.9rem;
         }
-        footer a { 
-            color: var(--primary-blue); 
-            font-weight: bold; 
-            text-decoration: underline; 
-        }
+        footer a { color: var(--match-yellow); text-decoration: underline; font-weight: bold; }
     </style>
 </head>
 
@@ -178,6 +182,10 @@
                 tarjeta2.disabled = true;
 
                 if (primerResultado == segundoResultado) {
+                    // Coincidencia encontrada
+                    tarjeta1.classList.add('correct');
+                    tarjeta2.classList.add('correct');
+                    
                     tarjetasDestapadas = 0;
                     aciertos++;
                     mostrarAciertos.innerHTML = `Matches: ${aciertos}`;
@@ -186,6 +194,7 @@
                         mostrarAciertos.innerHTML = `Matches: ${aciertos} ⭐ Win!`;
                     }
                 } else {
+                    // No coinciden, ocultar de nuevo
                     setTimeout(() => {
                         tarjeta1.innerHTML = ' ';
                         tarjeta2.innerHTML = ' ';
