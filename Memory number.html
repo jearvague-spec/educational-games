@@ -6,17 +6,18 @@
     <title>Memory Match Game</title>
     <style>
         :root {
-            /* Cambio a azul claro profesional */
-            --bg-color: #e0f2fe; 
-            --bg-gradient: radial-gradient(circle, #bae6fd 0%, #7dd3fc 100%);
-            --glass-bg: rgba(255, 255, 255, 0.4);
-            --primary-blue: #0369a1;
+            /* Azul profesional */
+            --bg-color: #075985; 
+            --bg-gradient: radial-gradient(circle, #0c4a6e 0%, #075985 100%);
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --text-light: #f0f9ff;
+            --match-yellow: #fde047; /* Amarillo para coincidencias */
         }
 
         body {
             background: var(--bg-gradient);
             background-color: var(--bg-color);
-            color: var(--primary-blue);
+            color: var(--text-light);
             font-family: 'Segoe UI', Tahoma, sans-serif;
             display: flex;
             flex-direction: column;
@@ -33,12 +34,12 @@
             background: var(--glass-bg);
             padding: 20px;
             border-radius: 15px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(4px); /* Efecto de desenfoque suave */
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        h1 { text-align: center; margin-bottom: 20px; color: var(--primary-blue); }
+        h1 { text-align: center; margin-bottom: 20px; color: var(--text-light); }
 
         table { border-spacing: 10px; }
 
@@ -58,10 +59,17 @@
         button:hover { 
             transform: scale(1.05); 
             background: #fff; 
-            border-color: var(--primary-blue);
         }
         
-        button:disabled { 
+        /* Clase para el par correcto */
+        button.correct {
+            background-color: var(--match-yellow) !important;
+            color: #854d0e !important;
+            border-color: #eab308 !important;
+            cursor: default;
+        }
+
+        button:disabled:not(.correct) { 
             background: #cbd5e1; 
             color: #64748b;
             cursor: default; 
@@ -71,17 +79,17 @@
 
         .stats-section {
             width: 200px;
-            background: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.1);
             padding: 20px;
             border-radius: 10px;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .stats-section h2 { margin: 0; font-size: 1.5rem; color: var(--primary-blue); }
+        .stats-section h2 { margin: 0; font-size: 1.5rem; color: var(--text-light); }
 
-        footer { margin-top: 30px; font-size: 0.9rem; opacity: 0.8; color: var(--primary-blue); }
-        footer a { color: var(--primary-blue); text-decoration: underline; font-weight: bold; }
+        footer { margin-top: 30px; font-size: 0.9rem; opacity: 0.8; color: var(--text-light); }
+        footer a { color: var(--match-yellow); text-decoration: underline; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -137,7 +145,6 @@
 
         let displayMatches = document.getElementById('aciertos');
 
-        // Logic for 8 pairs
         let numbers = [1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8];
         numbers = numbers.sort(() => Math.random() - 0.5);
 
@@ -156,6 +163,10 @@
                 card2.disabled = true;
 
                 if(firstResult == secondResult) {
+                    // Si hay coincidencia, aplicar color amarillo
+                    card1.classList.add('correct');
+                    card2.classList.add('correct');
+                    
                     cardsUncovered = 0;
                     matches++;
                     displayMatches.innerHTML = `Matches: ${matches}`;
