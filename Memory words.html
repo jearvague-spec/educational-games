@@ -1,207 +1,296 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Memory Game - Animals</title>
+    <title>Memory Game</title>
+    <link rel="icon" type="image/jpg" href="rocket.jpg">
+
     <style>
-        :root {
-            /* Azul profesional oscuro */
-            --bg-color: #075985; 
-            --bg-gradient: radial-gradient(circle, #0c4a6e 0%, #075985 100%);
-            --glass-bg: rgba(255, 255, 255, 0.15);
-            --text-light: #f0f9ff;
-            --match-yellow: #fde047; /* Amarillo para aciertos */
+        /* ===== Reset & Base Styles ===== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            background: var(--bg-gradient);
-            background-color: var(--bg-color);
-            color: var(--text-light);
-            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background-color: #1A365D; /* Professional Intense Blue */
+            color: white;
+            font-family: sans-serif;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding-top: 50px;
-        }
-
-        main {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 20px;
-            background: var(--glass-bg);
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            width: 90%;
-            max-width: 800px;
-        }
-
-        h1 { text-align: center; margin-bottom: 20px; color: var(--text-light); }
-
-        table { border-spacing: 10px; }
-
-        button {
-            height: 90px;
-            width: 90px;
-            font-size: 18px;
-            color: #1e293b;
-            font-weight: bold;
-            background: #f8fafc;
-            border: 2px solid #cbd5e1;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-transform: capitalize;
-        }
-
-        button:hover { 
-            transform: scale(1.05); 
-            background: #fff; 
-        }
-        
-        /* Clase para el par correcto (Amarillo) */
-        button.correct {
-            background-color: var(--match-yellow) !important;
-            color: #854d0e !important;
-            border-color: #eab308 !important;
-            cursor: default;
-            transform: scale(1.02);
-        }
-
-        button:disabled:not(.correct) { 
-            background: #cbd5e1; 
-            color: #64748b;
-            cursor: default; 
-            transform: none; 
-            border-color: transparent;
-        }
-
-        .section2 {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            width: 180px;
             padding: 20px;
+            /* Prevent selection globally as requested in original code */
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* ===== Main Container - Resizable & Responsive ===== */
+        main {
+            width: min(95vw, 800px);
+            max-width: 1200px;
+            min-width: 320px;
+            margin: 20px auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: flex-start;
+            justify-content: center;
+            /* Enable manual resize */
+            resize: both;
+            overflow: auto;
+            min-height: 400px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+        }
+
+        /* Resize handle indicator */
+        main::after {
+            content: "↹";
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            font-size: 12px;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* ===== Section 1 - Game Board ===== */
+        .section1 {
+            flex: 1 1 300px;
+            background-color: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            border-radius: 10px;
+            min-width: fit-content;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .section1 h1 {
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+
+        /* Table for cards */
+        .section1 table {
+            width: auto;
+            border-collapse: collapse;
+            margin: 0 auto;
+        }
+
+        .section1 td {
+            padding: 5px;
+        }
+
+        /* ===== FIXED SIZE BUTTONS ===== */
+        .section1 button {
+            width: 80px;       /* Fixed width */
+            height: 80px;      /* Fixed height */
+            font-size: 1rem;   /* Font size adjusted to fit words */
+            color: black;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            background: white;
+            transition: transform 0.1s, background 0.2s;
+            cursor: pointer;
+            word-break: break-word; /* Break long words if necessary */
+            line-height: 1.1;
+        }
+
+        .section1 button:hover:not(:disabled) {
+            transform: scale(1.05);
+            background: #f0f0f0;
+        }
+
+        .section1 button:disabled {
+            cursor: default;
+            opacity: 0.9;
+        }
+
+        /* ===== Section 2 - Stats Panel ===== */
+        .section2 {
+            flex: 0 0 200px;
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
         }
 
         .estadisticas {
-            border: 2px solid var(--match-yellow);
-            border-radius: 8px;
-            padding: 10px;
-            font-size: 1.3rem;
-            color: var(--match-yellow);
-            margin: 0;
+            border: 2px solid white;
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
         }
 
-        footer { 
-            margin-top: 40px; 
-            text-align: center; 
-            color: var(--text-light);
+        /* ===== Footer ===== */
+        footer {
+            text-align: center;
+            padding: 15px;
             font-size: 0.9rem;
+            opacity: 0.9;
         }
-        footer a { color: var(--match-yellow); text-decoration: underline; font-weight: bold; }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== Responsive Breakpoints ===== */
+        @media (max-width: 600px) {
+            main {
+                flex-direction: column;
+                resize: vertical;
+                align-items: center;
+            }
+
+            .section2 {
+                flex: 0 0 auto;
+                width: 100%;
+                max-width: 340px;
+            }
+            
+            .section1 {
+                width: 100%;
+                max-width: 340px;
+            }
+            
+            /* Slightly smaller buttons on very small screens if needed, 
+               but keeping them fixed as requested mostly */
+            .section1 button {
+                width: 70px;
+                height: 70px;
+                font-size: 0.8rem;
+            }
+        }
     </style>
 </head>
 
 <body oncontextmenu="return false;" onselectstart="return false;" ondragstart="return false;">
 
-    <h1>Memory Game - Animals</h1>
-
     <main>
         <section class="section1">
+            <h1>Memory Game</h1>
             <table>
                 <tr>
-                    <td><button id="0" onclick="destapar(0)"></button></td>
-                    <td><button id="1" onclick="destapar(1)"></button></td>
-                    <td><button id="2" onclick="destapar(2)"></button></td>
-                    <td><button id="3" onclick="destapar(3)"></button></td>
+                    <td><button id="0" onclick="flipCard(0)" aria-label="Card 1"></button></td>
+                    <td><button id="1" onclick="flipCard(1)" aria-label="Card 2"></button></td>
+                    <td><button id="2" onclick="flipCard(2)" aria-label="Card 3"></button></td>
+                    <td><button id="3" onclick="flipCard(3)" aria-label="Card 4"></button></td>
                 </tr>
                 <tr>
-                    <td><button id="4" onclick="destapar(4)"></button></td>
-                    <td><button id="5" onclick="destapar(5)"></button></td>
-                    <td><button id="6" onclick="destapar(6)"></button></td>
-                    <td><button id="7" onclick="destapar(7)"></button></td>
+                    <td><button id="4" onclick="flipCard(4)" aria-label="Card 5"></button></td>
+                    <td><button id="5" onclick="flipCard(5)" aria-label="Card 6"></button></td>
+                    <td><button id="6" onclick="flipCard(6)" aria-label="Card 7"></button></td>
+                    <td><button id="7" onclick="flipCard(7)" aria-label="Card 8"></button></td>
                 </tr>
                 <tr>
-                    <td><button id="8" onclick="destapar(8)"></button></td>
-                    <td><button id="9" onclick="destapar(9)"></button></td>
-                    <td><button id="10" onclick="destapar(10)"></button></td>
-                    <td><button id="11" onclick="destapar(11)"></button></td>
+                    <td><button id="8" onclick="flipCard(8)" aria-label="Card 9"></button></td>
+                    <td><button id="9" onclick="flipCard(9)" aria-label="Card 10"></button></td>
+                    <td><button id="10" onclick="flipCard(10)" aria-label="Card 11"></button></td>
+                    <td><button id="11" onclick="flipCard(11)" aria-label="Card 12"></button></td>
                 </tr>
                 <tr>
-                    <td><button id="12" onclick="destapar(12)"></button></td>
-                    <td><button id="13" onclick="destapar(13)"></button></td>
-                    <td><button id="14" onclick="destapar(14)"></button></td>
-                    <td><button id="15" onclick="destapar(15)"></button></td>
+                    <td><button id="12" onclick="flipCard(12)" aria-label="Card 13"></button></td>
+                    <td><button id="13" onclick="flipCard(13)" aria-label="Card 14"></button></td>
+                    <td><button id="14" onclick="flipCard(14)" aria-label="Card 15"></button></td>
+                    <td><button id="15" onclick="flipCard(15)" aria-label="Card 16"></button></td>
                 </tr>
             </table>
         </section>
 
         <section class="section2">
-            <h2 id="aciertos" class="estadisticas">Matches: 0</h2>
+            <h2 id="matches" class="estadisticas">Matches: 0</h2>
         </section>
     </main>
 
     <footer>
-        <p>Game programmed by <a href="#">JAVG</a> | EdTech Support</p>
+        <p>Game programmed by <a href="enlace">JAVA</a></p>
     </footer>
 
     <script>
-        let tarjetasDestapadas = 0;
-        let tarjeta1 = null;
-        let tarjeta2 = null;
-        let primerResultado = null;
-        let segundoResultado = null;
-        let aciertos = 0;
+        let flippedCards = 0;
+        let card1 = null;
+        let card2 = null;
+        let firstValue = null;
+        let secondValue = null;
+        let matches = 0;
 
-        let mostrarAciertos = document.getElementById('aciertos');
+        // Reference to HTML element
+        let displayMatches = document.getElementById('matches');
 
-        let numeros = ["dog","dog","cat","cat","bee","bee","fly","fly","cow","cow","sheep","sheep","bird","bird","frog","frog"];
-        numeros = numeros.sort(() => { return Math.random() - 0.5 });
+        // Array of words (8 pairs)
+        let cardsArray = ["dog","dog","cat","cat","bee","bee","fly","fly","cow","cow","sheep","sheep","bird","bird","frog","frog"];
+        
+        // Shuffle
+        cardsArray = cardsArray.sort(() => Math.random() - 0.5);
+        console.log(cardsArray);
 
-        function destapar(id) {
-            tarjetasDestapadas++;
+        function flipCard(id) {
+            flippedCards++;
+            console.log(flippedCards);
+            
+            if (flippedCards === 1) {
+                // Show first card
+                card1 = document.getElementById(id);
+                firstValue = cardsArray[id];
+                card1.innerHTML = firstValue;
+                card1.disabled = true;
+            } else if (flippedCards === 2) {
+                // Show second card
+                card2 = document.getElementById(id);
+                secondValue = cardsArray[id];
+                card2.innerHTML = secondValue;
+                card2.disabled = true;
 
-            if (tarjetasDestapadas == 1) {
-                tarjeta1 = document.getElementById(id);
-                primerResultado = numeros[id];
-                tarjeta1.innerHTML = primerResultado;
-                tarjeta1.disabled = true;
-            } else if (tarjetasDestapadas == 2) {
-                tarjeta2 = document.getElementById(id);
-                segundoResultado = numeros[id];
-                tarjeta2.innerHTML = segundoResultado;
-                tarjeta2.disabled = true;
-
-                if (primerResultado == segundoResultado) {
-                    // Coincidencia encontrada
-                    tarjeta1.classList.add('correct');
-                    tarjeta2.classList.add('correct');
+                if (firstValue === secondValue) {
+                    // Match found!
+                    // Change background to yellow (Icterine) as in original code
+                    card1.style.backgroundColor = `rgba(252,247,94,0.9)`;
+                    card2.style.backgroundColor = `rgba(252,247,94,0.9)`;
                     
-                    tarjetasDestapadas = 0;
-                    aciertos++;
-                    mostrarAciertos.innerHTML = `Matches: ${aciertos}`;
+                    flippedCards = 0;
+                    matches++;
+                    displayMatches.innerHTML = `Matches: ${matches}`;
 
-                    if (aciertos == 8) {
-                        mostrarAciertos.innerHTML = `Matches: ${aciertos} ⭐ Win!`;
+                    if (matches === 8) {
+                        displayMatches.innerHTML = `Matches: ${matches} - COMPLETE! 🎉`;
                     }
                 } else {
-                    // No coinciden, ocultar de nuevo
+                    // No match
                     setTimeout(() => {
-                        tarjeta1.innerHTML = ' ';
-                        tarjeta2.innerHTML = ' ';
-                        tarjeta1.disabled = false;
-                        tarjeta2.disabled = false;
-                        tarjetasDestapadas = 0;
-                    }, 1000);
+                        card1.innerHTML = '';
+                        card2.innerHTML = '';
+                        card1.disabled = false;
+                        card2.disabled = false;
+                        // Reset background if it was changed (though usually only changed on match)
+                        card1.style.backgroundColor = 'white';
+                        card2.style.backgroundColor = 'white';
+                        flippedCards = 0;
+                    }, 800);
                 }
             }
         }
