@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Counting Dice - Math Challenge</title>
+    <title>Counting Dice</title>
     <style>
         :root {
             --bg-color: #f1f5f9;
@@ -72,6 +72,7 @@
 
         .dot { width: 14px; height: 14px; background: var(--dot-color); border-radius: 50%; opacity: 0; }
         
+        /* Real dice patterns */
         .d-1 .dot:nth-child(5) { opacity: 1; }
         .d-2 .dot:nth-child(1), .d-2 .dot:nth-child(9) { opacity: 1; }
         .d-3 .dot:nth-child(1), .d-3 .dot:nth-child(5), .d-3 .dot:nth-child(9) { opacity: 1; }
@@ -118,7 +119,7 @@
     </div>
 
     <div class="game-controls">
-        <div id="statusLabel">Press the button to roll!</div>
+        <div id="statusLabel"></div>
         <div class="dice-area">
             <!-- Die 1 -->
             <div class="die d-1" id="die1">
@@ -182,7 +183,7 @@
             canPassManually = false;
             btn.textContent = "STOP";
             btn.classList.add('stop');
-            label.textContent = "Rolling...";
+            label.textContent = "";
             rollInterval = setInterval(() => {
                 document.getElementById('die1').className = `die rolling d-${Math.floor(Math.random()*6)+1}`;
                 document.getElementById('die2').className = `die rolling d-${Math.floor(Math.random()*6)+1}`;
@@ -201,18 +202,81 @@
             document.getElementById('die2').className = `die d-${v2}`;
             
             targetSum = v1 + v2;
-            label.textContent = "Target Sum: " + targetSum;
-            btn.disabled = true;
-            btn.textContent = "SELECT NUMBERS";
-            // ... resto de tu lógica de juego aquí
+            selectedVals = [];
+
+            const available = Array.from(document.querySelectorAll(`#m1 .cell:not(.correct)`))
+                                   .map(c => parseInt(c.textContent));
+            
+            if (!canSum(available, targetSum)) {
+                btn.textContent = "PASSED! (Click here)";
+                btn.classList.add('passed');
+                canPassManually = true;
+                label.textContent = "";
+            } else {
+                btn.textContent = "Select your numbers";
+                btn.disabled = true;
+                label.textContent = "";
+            }
+        }
+
+        function canSum(nums, target) {
+            if (target === 0) return true;
+            if (target < 0) return false;
+            for (let i = 0; i < nums.length; i++) {
+                const n = nums[i];
+                const rest = nums.slice(i + 1);
+                if (canSum(rest, target - n)) return true;
+            }
+            return false;
+        }
+
+        function selectCell(cell, val) {
+            if(isRolling || gameWon || cell.classList.contains('correct') || (btn.disabled === false && !canPassManually)) return;
+
+            cell.classList.toggle('selected');
+            if(cell.classList.contains('selected')) {
+                selectedVals.push(val);
+            } else {
+                selectedVals = selectedVals.filter(v => v !== val);
+            }
+
+            const currentTotal = selectedVals.reduce((a,b) => a+b, 0);
+
+            if(currentTotal === targetSum) {
+                label.textContent = "";
+                document.querySelectorAll(`#m1 .selected`).forEach(c => {
+                    c.classList.remove('selected');
+                    c.classList.add('correct');
+                });
+                
+                if(document.querySelectorAll(`#m1 .correct`).length === 10) {
+                    gameWon = true;
+                    btn.style.display = 'none';
+                    restartBtn.style.display = 'inline-block';
+                    label.textContent = "";
+                    return;
+                }
+                
+                setTimeout(resetTurn, 800);
+            } else if (currentTotal > targetSum) {
+                btn.textContent = "OVER SHOT! (Click here)";
+                btn.classList.add('passed');
+                btn.disabled = false;
+                canPassManually = true;
+                label.textContent = "";
+                document.querySelectorAll(`#m1 .selected`).forEach(c => c.classList.add('error'));
+            }
         }
 
         function resetTurn() {
             canPassManually = false;
-            btn.classList.remove('passed');
+            document.querySelectorAll('.error').forEach(c => c.classList.remove('error', 'selected'));
+            selectedVals = [];
+            
+            btn.disabled = false;
             btn.textContent = "ROLL THE DICE";
-            label.textContent = "Next turn!";
-            // ... lógica para limpiar selección aquí
+            btn.classList.remove('passed');
+            label.textContent = "";
         }
     </script>
 </body>
