@@ -17,7 +17,7 @@
         }
 
         body {
-            background-color: #4682B4; /* Steel Blue - darker light blue */
+            background-color: #1A365D; /* Professional Intense Blue */
             color: white;
             font-family: sans-serif;
             min-height: 100vh;
@@ -62,10 +62,10 @@
         /* ===== Section 1 - Game Board ===== */
         .section1 {
             flex: 1 1 300px;
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color: rgba(255, 255, 255, 0.15);
             padding: 15px;
             border-radius: 10px;
-            min-width: fit-content; /* Ajusta al contenido */
+            min-width: fit-content;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -74,25 +74,25 @@
         .section1 h1 {
             text-align: center;
             margin-bottom: 15px;
-            font-size: 1.8rem; /* Tamaño fijo para el título */
+            font-size: 1.8rem;
         }
 
-        /* Responsive table for cards */
+        /* Table for cards */
         .section1 table {
-            width: auto; /* La tabla ocupa solo lo necesario */
+            width: auto;
             border-collapse: collapse;
             margin: 0 auto;
         }
 
         .section1 td {
-            padding: 5px; /* Espacio entre cartas */
+            padding: 5px;
         }
 
         /* ===== FIXED SIZE BUTTONS ===== */
         .section1 button {
-            width: 80px;       /* Ancho fijo */
-            height: 80px;      /* Alto fijo */
-            font-size: 2rem;   /* Tamaño de fuente fijo */
+            width: 80px;       /* Fixed width */
+            height: 80px;      /* Fixed height */
+            font-size: 2rem;   /* Fixed font size */
             color: black;
             font-weight: bold;
             border: none;
@@ -100,7 +100,6 @@
             background: white;
             transition: transform 0.1s, background 0.2s;
             cursor: pointer;
-            /* Evita que el texto se seleccione al hacer clic rápido */
             user-select: none; 
         }
 
@@ -117,7 +116,7 @@
         /* ===== Section 2 - Stats Panel ===== */
         .section2 {
             flex: 0 0 200px;
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color: rgba(255, 255, 255, 0.15);
             border-radius: 10px;
             padding: 20px;
             display: flex;
@@ -159,19 +158,19 @@
         @media (max-width: 600px) {
             main {
                 flex-direction: column;
-                resize: vertical; /* Solo vertical en móviles para evitar romper el layout */
+                resize: vertical;
                 align-items: center;
             }
 
             .section2 {
                 flex: 0 0 auto;
                 width: 100%;
-                max-width: 340px; /* Limitar ancho del panel en móvil */
+                max-width: 340px;
             }
             
             .section1 {
                 width: 100%;
-                max-width: 340px; /* Asegura que las cartas quepan en pantalla */
+                max-width: 340px;
             }
         }
     </style>
